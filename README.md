@@ -3,11 +3,11 @@
 Estrutura base do projeto:
 
 Pasta raiz/<br>
-| _ public/
-| _ _ index.html
-| _ _ styles.css
-| _ server/
-| _ _ app.js
+| _ public/<br>
+| _ _ index.html<br>
+| _ _ styles.css<br>
+| _ server/<br>
+| _ _ app.js<br>
 
 Após montar essa base, abre o terminal na pasta raiz do do projeto e instale o Express e o Socket.io com os comandos:
 

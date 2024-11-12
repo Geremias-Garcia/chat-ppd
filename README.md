@@ -2,7 +2,7 @@
 
 Estrutura base do projeto:
 
-Pasta raiz/
+Pasta raiz/<br>
 | _ public/
 | _ _ index.html
 | _ _ styles.css

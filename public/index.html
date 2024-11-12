@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat em Tempo Real</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Identificação do Usuário -->
+  <div id="user-identity">
+    <input type="text" id="username" placeholder="Digite seu nome">
+    <button onclick="setUsername()">Definir Nome</button>
+  </div>
+
+  <!-- Seleção da Sala -->
+  <div id="room-selection" style="display:none;">
+    <input type="text" id="room-name" placeholder="Nome da Sala">
+    <button onclick="createRoom()">Criar Sala</button>
+    <br><br>
+    <label for="room-list">Escolha uma sala para entrar:</label>
+    <select id="room-list"></select>
+    <button onclick="joinRoom()">Entrar na Sala</button>
+  </div>
+
+  <!-- Chat Room -->
+  <div id="chat-room" style="display:none;">
+    <div id="messages"></div>
+    <input type="text" id="message-input" placeholder="Digite uma mensagem">
+    <button id="send-button" onclick="sendMessage()">Enviar</button>
+    <button id="leave-button" onclick="leaveRoom()">Sair da Sala</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let username = '';
+
+    // Definir o nome do usuário
+    function setUsername() {
+      username = document.getElementById('username').value;
+      if (username) {
+        socket.emit('setUsername', username);
+        document.getElementById('user-identity').style.display = 'none';
+        document.getElementById('room-selection').style.display = 'block';
+      }
+    }
+
+    // Receber e exibir a lista de salas
+    socket.on('roomsList', (rooms) => {
+      const roomList = document.getElementById('room-list');
+      roomList.innerHTML = ''; // Limpar a lista existente
+      rooms.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room;
+        option.textContent = room;
+        roomList.appendChild(option);
+      });
+    });
+
+    // Criar uma nova sala
+    function createRoom() {
+      const room = document.getElementById('room-name').value;
+      if (room) {
+        socket.emit('createRoom', room);
+      }
+    }
+
+    // Entrar em uma sala
+    function joinRoom() {
+      const room = document.getElementById('room-list').value;
+      if (room) {
+        socket.emit('joinRoom', room);
+        document.getElementById('room-selection').style.display = 'none';
+        document.getElementById('chat-room').style.display = 'block';
+      }
+    }
+
+    // Enviar mensagem
+    function sendMessage() {
+      const message = document.getElementById('message-input').value;
+      if (message) {
+        socket.emit('chatMessage', message);
+        document.getElementById('message-input').value = '';
+      }
+    }
+
+    // Sair da sala
+    function leaveRoom() {
+      socket.emit('leaveRoom');
+      document.getElementById('room-selection').style.display = 'block';
+      document.getElementById('chat-room').style.display = 'none';
+      document.getElementById('messages').innerHTML = ''; // Limpar mensagens ao sair
+    }
+
+    // Receber mensagens
+    socket.on('message', (msg) => {
+      const messages = document.getElementById('messages');
+      const msgElem = document.createElement('div');
+      msgElem.innerHTML = `<span>${msg.username}:</span> ${msg.message}`; // Exibir o nome de usuário junto com a mensagem
+      messages.appendChild(msgElem);
+    });
+  </script>
+</body>
+</html>

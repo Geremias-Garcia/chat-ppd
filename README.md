@@ -1,15 +1,18 @@
 # chat-ppd
 
-Estrutura base do projeto:
+Para iniciar, você deverá ter o Node instalado em sua máquina. Confirme isso com o seguinte comando no terminal: 
 
-Pasta raiz/<br>
-| _ public/<br>
-| _ _ index.html<br>
-| _ _ styles.css<br>
-| _ server/<br>
-| _ _ app.js<br>
+node -v 
 
-Após montar essa base, abre o terminal na pasta raiz do do projeto e instale o Express e o Socket.io com os comandos:
+Caso não esteja instalado, vá no site e confira como fazer a instalação: 
+
+https://nodejs.org/pt
+
+Com o Node instalado, crie um diretório que será a raiz do projeto. 
+
+Dentro da pasta raiz do projeto, clone os arquivos desse repositório.
+
+Após os arquivos serem clonados, abra um terminal na pasta raiz e coloque os seguintes comandos no terminal:
 
 npm init -y
 
